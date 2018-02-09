@@ -1,0 +1,51 @@
+//this program allows a robot using two servo's to "walk" forward
+
+#include <Servo.h>  // The source code libaray that contains blueprints for Servo "classes"
+
+Servo frontServo; // creates an object frontServo of Servo type
+                  // This object now has access to all the methods defined in Servo
+Servo rearServo;
+
+
+// These are program variables that define different movement positions for the servos in degrees
+int centerPos = 90;
+int frontRightUp = 72;  //each degree measure represents the max angle that each respective leg will move
+int frontLeftUp = 108;
+int backRightForward = 75;
+int backLeftForward = 105;
+
+void moveForward(); // function prototype 
+
+void setup() 
+{
+  frontServo.attach(2); // mounts the object to the board, making the board aware of the Servo, and wich pin it will be in
+  rearServo.attach(3);
+}
+
+// code here will be repeated forever
+void loop() 
+{
+  moveForward();
+  delay(150); //time taken between each step, aka the speed of the walk
+}
+
+void moveForward()  //this function determines the actual cadence of the robot
+{
+  // the write method represents the digitial signal sent to the servos via the arduino 
+  // telling it to perform  a certain action
+  // here, to move a specified amount of degrees
+  frontServo.write(frontRightUp);       // Initiates first part of the cadence, moving legs up
+  rearServo.write(backLeftForward);
+  delay(125);
+  frontServo.write(centerPos);          // resets the cadence, moving the legs back to center
+  rearServo.write(centerPos);
+  delay(65);
+  frontServo.write(frontLeftUp);        // alternate cadence initiated
+  rearServo.write(backRightForward);
+  delay(125);
+
+  frontServo.write(centerPos);          // return to center of walk
+  rearServo.write(centerPos);
+  delay(65);
+}
+
